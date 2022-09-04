@@ -1,25 +1,54 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route } from "react-router-dom"
+import styled from 'styled-components';
+import { createGlobalStyle } from 'styled-components'
+import Header from './components/Header';
+import Home from "./components/Home"
+import ImageDetails from "./components/ImageDetails"
+import useGetApodImageData from './hooks/useGetApodImageData';
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    display:flex;
+    justify-content: center;
+    margin: 0em 3em;
+    margin-bottom: 4em;
+    font-family: 'Orbitron', sans-serif;
+    background-color: black;
+    color: white;
+    overflow: overlay;
+  }
+
+  ::-webkit-scrollbar {
+    -webkit-appearance: none;
+    height: 8px;
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.5);
+    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+  }
+`
+
+const AppDiv = styled.div`
+  width: min(calc(100vw - 6em), 150vmin);
+`
 
 function App() {
+  const apodData = useGetApodImageData();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppDiv>
+      <GlobalStyle />
+      <Routes>
+        <Route element={<Header />}>
+          <Route index element={<Home apodData={apodData} />} />
+          <Route path="image/:imageTitleParam" element={<ImageDetails apodData={apodData} />} />
+        </Route>
+      </Routes>
+    </AppDiv>
   );
 }
 
