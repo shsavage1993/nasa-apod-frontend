@@ -10,11 +10,11 @@ interface ImageTileProps {
     title: string;
 }
 
-const ImgLink = styled(Link)`
+export const ImgLink = styled(Link)`
     position: relative;
     width: calc( (100% - 3em) / 3 );
     aspect-ratio: 4 / 3;
-    border: 1px solid white;
+    // border: 1px solid white;
     box-sizing: border-box;
 `
 

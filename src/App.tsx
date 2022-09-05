@@ -8,12 +8,15 @@ import ImageDetails from "./components/ImageDetails"
 import useGetApodImageData from './hooks/useGetApodImageData';
 
 const GlobalStyle = createGlobalStyle`
+  * {
+    font-family: 'Orbitron', sans-serif;
+  }
+
   body {
     display:flex;
     justify-content: center;
     margin: 0em 3em;
     margin-bottom: 4em;
-    font-family: 'Orbitron', sans-serif;
     background-color: black;
     color: white;
     overflow: overlay;

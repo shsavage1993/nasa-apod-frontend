@@ -3,6 +3,9 @@ import { FC } from 'react';
 import ImageGrid from './ImageGrid';
 // import styled from 'styled-components';
 import { ApodImageData } from '../shared/types';
+import { ContactForm } from './ContactForm';
+import styled from 'styled-components';
+import { MotionDiv } from '../shared/components/MotionDiv';
 
 // const HomeDiv = styled.div`
 // 	border: 3px solid black;
@@ -19,6 +22,9 @@ import { ApodImageData } from '../shared/types';
 // 		margin: 2em;
 // 	}
 // `;
+const Sep = styled.div`
+	height: 4em;
+`
 
 interface HomeProps {
 	apodData: ApodImageData[] | undefined;
@@ -26,9 +32,11 @@ interface HomeProps {
 
 const Home: FC<HomeProps> = ({ apodData }) => {
 	return (
-		<div>
+		<MotionDiv>
 			<ImageGrid apodData={apodData} />
-		</div>
+			<Sep />
+			<ContactForm />
+		</MotionDiv>
 	);
 }
 
