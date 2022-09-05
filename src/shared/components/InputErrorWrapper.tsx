@@ -12,9 +12,9 @@ const Container = styled.div`
         border-color: red;
     }
 
-    // &.invalid input:hover + .error,
+    &.invalid input:hover + .error,
     &.invalid input:focus + .error,
-    // &.invalid textarea:hover + .error,
+    &.invalid textarea:hover + .error,
     &.invalid textarea:focus + .error {
         display: block;
         bottom: -1.4em;
@@ -33,12 +33,12 @@ const Error = styled.div`
     max-width: 100%;
     // margin-top: 0.1rem;
     padding: 0.1rem;
-    font-size: .875rem;
+    font-size: .8rem;
     border-radius: 0.375rem;
     background-color: rgba(220,53,69,.9);
     color: white;
     display: none;
-    font-weight: 500;
+    font-weight: 400!important;
 `
 
 interface InputErrorWrapperProps extends PropsWithChildren {

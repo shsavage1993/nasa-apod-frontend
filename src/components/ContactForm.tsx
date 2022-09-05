@@ -24,12 +24,12 @@ const schema = yup.object().shape({
 	cv: yup.mixed()
 		.test(
 			"fileFormat",
-			"Unsupported Format",
+			"Unsupported format (must be .doc, .docx, .pdf)",
 			value => value ? value && SUPPORTED_FORMATS.includes(value.type) : true
 		)
 		.test(
 			"fileSize",
-			"File too large",
+			"File too large (must be 2mb or less)",
 			value => value ? value && value.size <= FILE_SIZE : true
 		)
 });
@@ -63,10 +63,19 @@ const Button = styled.button`
 	height: 40px;
 	font-family: 'Orbitron', sans-serif;
 	font-weight: bold;
-	font-size: 110%;
+	font-size: 1.05em;
 `
 
-const initialValues = { firstName: '', lastName: '', birthday: '', subject: '', body: '', cv: undefined }
+interface Values {
+	firstName: string;
+	lastName: string;
+	birthday: string;
+	subject: string;
+	body: string;
+	cv: File | undefined
+}
+
+const initialValues: Values = { firstName: '', lastName: '', birthday: '', subject: '', body: '', cv: undefined }
 
 export const ContactForm: FC = () => {
 	return (
@@ -77,21 +86,37 @@ export const ContactForm: FC = () => {
 				validateOnChange={false}
 				validateOnBlur={false}
 				onSubmit={(values, { setSubmitting, resetForm }) => {
-					setTimeout(() => {
-						console.dir(values);
-						setSubmitting(false);
-						resetForm({ values: initialValues });
-					}, 400);
-					// try {
-					// 	await addDoc(collection(db, 'rsvp'), {
-					// 		...values,
-					// 		createdAt: serverTimestamp(),
-					// 	});
+					// setTimeout(() => {
+					// 	alert(JSON.stringify(values, null, 2));
 					// 	setSubmitting(false);
-					// } catch (err) {
-					// 	console.error(err);
-					// 	setSubmitting(false);
-					// }
+					// 	resetForm({ values: initialValues });
+					// }, 400);
+
+					let data = new FormData();
+					for (const [key, value] of Object.entries(values)) {
+						if (value) {
+							data.append(key, value);
+						}
+					}
+
+					axios.post(
+						process.env.REACT_APP_CONTACT_API_URL!,
+						data,
+						{
+							headers: { "Content-Type": "multipart/form-data", },
+						}
+					)
+						.then((response) => {
+							console.log(response);
+							alert('Your message was sent, thank you for contacting us!')
+							setSubmitting(false);
+							resetForm({ values: initialValues });
+						})
+						.catch((err) => {
+							console.error(err)
+							alert(`Oops! Your message was not sent, please try again!`);
+							setSubmitting(false);
+						});
 				}}
 			>
 				{({
@@ -102,7 +127,7 @@ export const ContactForm: FC = () => {
 					isSubmitting,
 					setFieldValue,
 					setFieldError,
-					validateForm
+					validateForm,
 				}) => (
 					<Form noValidate onSubmit={handleSubmit}>
 						<H2>Contact Form</ H2>
@@ -157,19 +182,26 @@ export const ContactForm: FC = () => {
 									onChange={(event) => {
 										handleChange(event)
 										setFieldError(event.target.name, '')
-										console.dir(errors);
 									}}
 									value={values.body}
 								/>
 							</InputErrorWrapper>
 						</div>
-						<div style={{ marginBottom: '1.25em' }}>
+						<div style={{ marginBottom: '0.75em' }}>
 							<InputFile
 								id="cv"
-								handleChange={(event) => {
+								label={values.cv ? values.cv.name : undefined}
+								handleChange={async (event) => {
 									const file = event.target.files![0];
 									setFieldValue("cv", file);
-									validateForm({ cv: file });
+									try {
+										await yup.reach(schema, 'cv').validate(file)
+										setFieldError('cv', '')
+									} catch (err: any) {
+										setFieldError('cv', err.errors)
+									}
+
+									// validateForm({ ...values, cv: file });
 								}}
 								error={errors.cv}
 							/>

@@ -26,7 +26,6 @@ const useGetApodImageData = () => {
 					return { url: url, title: img.title, explanation: img.explanation };
 				})
 
-				console.dir(data);
 				setApodImageData(data);
 			} catch (err) {
 				console.log(err);
