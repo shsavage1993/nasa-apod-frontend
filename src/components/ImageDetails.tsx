@@ -1,11 +1,10 @@
 import React from 'react';
-import { FC } from 'react';
-// import styled from 'styled-components';
+import { FC, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import { ApodImageData } from '../shared/types';
-import { useParams } from 'react-router-dom';
 import { lowerCaseDashed } from '../shared/functions';
 import Image from '../shared/components/Image';
-import styled from 'styled-components';
 import { MotionDiv } from '../shared/components/MotionDiv';
 
 
@@ -47,8 +46,16 @@ interface ImageDetailsProp {
 }
 
 const ImageDetails: FC<ImageDetailsProp> = ({ apodData }) => {
+	const navigate = useNavigate();
 	const { imageTitleParam } = useParams();
 	const imageData = apodData?.find(img => lowerCaseDashed(img.title) === imageTitleParam)
+
+	useEffect(() => {
+		if (!imageData) {
+			navigate("/", { replace: true })
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	return (
 		<MotionDiv>
