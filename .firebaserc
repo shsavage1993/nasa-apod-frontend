@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "default": "nasa-apod-app-d953d",
+    "prod": "nasa-apod-app-d953d",
+    "dev": "nasa-apod-app-dev"
+  },
+  "targets": {},
+  "etags": {}
+}
