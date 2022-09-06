@@ -23,7 +23,7 @@ const Container = styled.div`
 
     &.invalid label:hover + .error {
         display: block;
-        bottom: -1.4em;
+        bottom: -1.5em;
     }
 `
 
