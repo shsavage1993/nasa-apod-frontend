@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom"
 import styled from 'styled-components';
 import { createGlobalStyle } from 'styled-components'
 import Header from './components/Header';
@@ -49,6 +49,7 @@ function App() {
         <Route element={<Header />}>
           <Route index element={<Home apodData={apodData} />} />
           <Route path="image/:imageTitleParam" element={<ImageDetails apodData={apodData} />} />
+          <Route path='*' element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
     </AppDiv>
