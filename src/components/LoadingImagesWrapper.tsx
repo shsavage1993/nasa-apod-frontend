@@ -1,9 +1,7 @@
 import React from 'react';
 import { FC, PropsWithChildren } from 'react';
-import { motion } from 'framer-motion';
 import useImagesLoaded from '../hooks/useImagesLoaded';
 import styled, { keyframes } from 'styled-components';
-// import { LinearProgress } from '@material-ui/core';
 
 const flash = keyframes`
 	0% { opacity: 0 }
